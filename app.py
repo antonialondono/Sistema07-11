@@ -107,8 +107,10 @@ with st.sidebar:
                 )            
 
 image = Image.open('Remy.png')
-st.image(image)
-st.title('REMY 💬')
+col1, col2, col3 = st.columns([1,2,3])
+with col2:
+    st.image (image, caption='tu receta a un clic',width=300)
+st.subheader('¿Qué quieres preparar el día de hoy? 💬')
 
 #with open('oven.json') as source:
  #    animation=json.load(source)
