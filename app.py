@@ -106,9 +106,10 @@ with st.sidebar:
     """
                 )            
 
-st.title('REMY 💬')
 image = Image.open('Remy.png')
 st.image(image)
+st.title('REMY 💬')
+
 #with open('oven.json') as source:
  #    animation=json.load(source)
 #st.lottie(animation,width =350)
