@@ -107,7 +107,7 @@ with st.sidebar:
                 )            
 
 st.title('REMY 💬')
-#image = Image.open('Instructor.png')
+#image = Image.open('Remy.png')
 #st.image(image)
 with open('oven.json') as source:
      animation=json.load(source)
