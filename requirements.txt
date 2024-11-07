@@ -1,0 +1,14 @@
+langchain==0.0.154
+PyPDF2==3.0.1
+python-dotenv==1.0.0
+streamlit==1.18.1
+faiss-cpu==1.7.4
+streamlit-extras
+openai==0.28
+tiktoken
+gTTS==2.2.2
+googletrans==3.1.0a0
+streamlit-lottie
+altair==4.2.0
+paho-mqtt==1.6.1
+pytz
