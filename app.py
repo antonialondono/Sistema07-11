@@ -110,7 +110,7 @@ image = Image.open('Remy.png')
 col1, col2, col3 = st.columns([1,2,3])
 with col2:
     st.image (image, caption='Tu receta a un clic',width=300)
-st.markdown("<h1 style='text-align: center; color: #6F8197;'>¿Qué quieres preparar el día de hoy?</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #5F6E81;'>¿Qué quieres preparar el día de hoy?</h1>", unsafe_allow_html=True)
 #st.subheader('¿Qué quieres preparar el día de hoy?')
 
 #with open('oven.json') as source:
