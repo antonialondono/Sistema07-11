@@ -107,11 +107,11 @@ with st.sidebar:
                 )            
 
 st.title('REMY 💬')
-#image = Image.open('Remy.png')
-#st.image(image)
-with open('oven.json') as source:
-     animation=json.load(source)
-st.lottie(animation,width =350)
+image = Image.open('Remy.png')
+st.image(image)
+#with open('oven.json') as source:
+ #    animation=json.load(source)
+#st.lottie(animation,width =350)
 
 #ke = st.text_input('Ingresa tu Clave')
 #os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
