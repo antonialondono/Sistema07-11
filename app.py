@@ -21,7 +21,7 @@ import pytz
 
 MQTT_BROKER = "broker.mqttdashboard.com"
 MQTT_PORT = 1883
-MQTT_TOPIC = "sensort_st"
+MQTT_TOPIC = "sensor_st"
 
 # Variables de estado para los datos del sensor
 if 'sensor_data' not in st.session_state:
@@ -99,14 +99,14 @@ except:
     pass
 
 with st.sidebar:
-    st.subheader("HORNO INTELIGENTE")
+    st.subheader("ASISTENTE DE COCINA")
     st.write(
     """Esta app hace más fácil preparar tus recetas.
        
     """
                 )            
 
-st.title('SMARTOVEN 💬')
+st.title('REMY 💬')
 #image = Image.open('Instructor.png')
 #st.image(image)
 with open('oven.json') as source:
