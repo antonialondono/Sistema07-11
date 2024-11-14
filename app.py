@@ -1,5 +1,5 @@
 import os
-#from dotenv import load_dotenv
+import base64
 import streamlit as st
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
@@ -12,39 +12,34 @@ import PyPDF2
 from PIL import Image as Image, ImageOps as ImagOps
 import glob
 from gtts import gTTS
-import os
 import time
 from streamlit_lottie import st_lottie
 import json
 import paho.mqtt.client as mqtt
-import pytz
 
+# Función para convertir una imagen a base64
+def get_base64_image(file_path):
+    with open(file_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode()
+
+# Ruta a la imagen de fondo
+image_base64 = get_base64_image("fondo.png")  
 # CSS para personalización de fondo y tipografía
-st.markdown(
-    """
-    <style>
-    .main {
-        background-color: #fef0f3; /* Cambia el color de fondo */
-    }
-    h1, h2, h3, h4, h5, h6, p, label, .stButton button {
-        font-family: 'Monospace', sans-serif; /* Cambia la fuente */
-        color: #333333; /* Cambia el color de la fuente */
-    }
-
-      textarea {
-        background-color: #ffffff;}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 st.markdown(
     f"""
     <style>
     .main {{
-        background-image: url("data:fondo/png;base64,{image_base64}");
+        background-image: url("data:image/png;base64,{image_base64}");
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+    }}
+    h1, h2, h3, h4, h5, h6, p, label, .stButton button {{
+        font-family: 'Monospace', sans-serif;
+        color: #333333;
+    }}
+    textarea {{
+        background-color: #ffffff;
     }}
     </style>
     """,
@@ -55,21 +50,20 @@ MQTT_BROKER = "broker.mqttdashboard.com"
 MQTT_PORT = 1883
 MQTT_TOPIC = "sensor_st"
 
-# Variables de estado para los datos del sensor
 if 'sensor_data' not in st.session_state:
     st.session_state.sensor_data = None
 
 def text_to_speech(text, tld):
-    tts = gTTS(response, "es", tld, slow=False)
+    tts = gTTS(text, lang="es", tld=tld, slow=False)
     try:
-        my_file_name = text[0:20]
+        my_file_name = text[:20]
     except:
         my_file_name = "audio"
     tts.save(f"temp/{my_file_name}.mp3")
     return my_file_name, text
 
 def remove_files(n):
-    mp3_files = glob.glob("temp/*mp3")
+    mp3_files = glob.glob("temp/*.mp3")
     if len(mp3_files) != 0:
         now = time.time()
         n_days = n * 86400
@@ -78,7 +72,6 @@ def remove_files(n):
                 os.remove(f)
 
 def send_mqtt_message(message):
-    """Función para enviar un mensaje MQTT"""
     try:
         client = mqtt.Client()
         client.connect(MQTT_BROKER, MQTT_PORT, 60)
@@ -90,7 +83,6 @@ def send_mqtt_message(message):
         return False
 
 def get_mqtt_message():
-    """Función para obtener un único mensaje MQTT"""
     message_received = {"received": False, "payload": None}
     
     def on_message(client, userdata, message):
@@ -190,14 +182,14 @@ with col2:
                 result, output_text = text_to_speech(response, 'es-es')
                 audio_file = open(f"temp/{result}.mp3", "rb")
                 audio_bytes = audio_file.read()
-                st.markdown(f"## Escucha:")
+                st.markdown("## Escucha:")
                 st.audio(audio_bytes, format="audio/mp3", start_time=0)
 
 user_question = "" 
 TEMPC = st.number_input("Temperatura", key="1")
 TIMEC = st.number_input("Tiempo", key="2")
 if st.button("Preparar"):
-    mensaje = f"{TEMPC} grados,{TIMEC} min" 
+    mensaje = f"{TEMPC} grados, {TIMEC} min"
     send_mqtt_message(mensaje)
     client = mqtt.Client()
     client.connect(MQTT_BROKER, MQTT_PORT, 60)
@@ -210,5 +202,3 @@ if st.button("Preparar"):
             st.success("Mensaje enviado con éxito")
         else:
             st.error("Error al enviar el mensaje")
-
-pdfFileObj.close()
