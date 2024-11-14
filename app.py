@@ -37,6 +37,19 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+st.markdown(
+    f"""
+    <style>
+    .main {{
+        background-image: url("data:fondo/png;base64,{image_base64}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 MQTT_BROKER = "broker.mqttdashboard.com"
 MQTT_PORT = 1883
