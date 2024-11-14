@@ -46,7 +46,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-MQTT_BROKER = "broker.mqttdashboard.com"
+MQTT_BROKER = "157.230.214.127"
 MQTT_PORT = 1883
 MQTT_TOPIC = "smartoven"
 
