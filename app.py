@@ -48,7 +48,7 @@ st.markdown(
 
 MQTT_BROKER = "broker.mqttdashboard.com"
 MQTT_PORT = 1883
-MQTT_TOPIC = "sensor_st"
+MQTT_TOPIC = "smartoven"
 
 if 'sensor_data' not in st.session_state:
     st.session_state.sensor_data = None
