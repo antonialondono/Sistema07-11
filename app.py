@@ -48,7 +48,7 @@ st.markdown(
 
 MQTT_BROKER = "157.230.214.127"
 MQTT_PORT = 1883
-MQTT_TOPIC = "smartoven" // debe ser igual a publish de wokwi
+MQTT_TOPIC = "smartoven"  #debe ser igual a publish de wokwi
 
 if 'sensor_data' not in st.session_state:
     st.session_state.sensor_data = None
@@ -75,7 +75,7 @@ def send_mqtt_message(message):
     try:
         client = mqtt.Client()
         client.connect(MQTT_BROKER, MQTT_PORT, 60)
-        client.publish("h_ctrl", message) // debe ser igual al topic de wokwi
+        client.publish("h_ctrl", message)  #debe ser igual al topic de wokwi
         client.disconnect()
         return True
     except Exception as e:
