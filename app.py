@@ -163,7 +163,7 @@ with col2:
     
     if user_question:
         if st.session_state.sensor_data:
-            enhanced_question = f"Pregunta del usuario:\n{user_question} , por favor describe la receta # ,escribir al final solo los valores de temperatura de la receta y el tiempo en la respuesta"
+            enhanced_question = f"Pregunta del usuario:\n{user_question} , por favor describe la receta y escribir al final solo los valores de temperatura de la receta y el tiempo en la respuesta"
         else:
             enhanced_question = user_question
         
@@ -182,7 +182,7 @@ with col2:
                 result, output_text = text_to_speech(response, 'es-es')
                 audio_file = open(f"temp/{result}.mp3", "rb")
                 audio_bytes = audio_file.read()
-                st.markdown("## Escucha:")
+                st.markdown("Escucha:")
                 st.audio(audio_bytes, format="audio/mp3", start_time=0)
 
 user_question = "" 
