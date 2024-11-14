@@ -27,7 +27,7 @@ st.markdown(
         background-color: #fef0f3; /* Cambia el color de fondo */
     }
     h1, h2, h3, h4, h5, h6, p, label, .stButton button {
-        font-family: 'monospace', sans-serif; /* Cambia la fuente */
+        font-family: 'Monospace', sans-serif; /* Cambia la fuente */
         color: #333333; /* Cambia el color de la fuente */
     }
 
