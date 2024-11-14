@@ -182,7 +182,7 @@ with col2:
                 result, output_text = text_to_speech(response, 'es')
                 audio_file = open(f"temp/{result}.mp3", "rb")
                 audio_bytes = audio_file.read()
-                st.markdown("##Escucha:")
+                st.markdown("Escucha:")
                 st.audio(audio_bytes, format="audio/mp3", start_time=0)
 
 user_question = "" 
