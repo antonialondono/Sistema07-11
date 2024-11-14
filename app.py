@@ -30,6 +30,9 @@ st.markdown(
         font-family: 'monospace', sans-serif; /* Cambia la fuente */
         color: #333333; /* Cambia el color de la fuente */
     }
+
+      textarea {
+        background-color: #ffffff;}
     </style>
     """,
     unsafe_allow_html=True
