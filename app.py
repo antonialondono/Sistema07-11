@@ -19,6 +19,22 @@ import json
 import paho.mqtt.client as mqtt
 import pytz
 
+# CSS para personalización de fondo y tipografía
+st.markdown(
+    """
+    <style>
+    .main {
+        background-color: #fef0f3; /* Cambia el color de fondo */
+    }
+    h1, h2, h3, h4, h5, h6, p, label, .stButton button {
+        font-family: 'monospace', sans-serif; /* Cambia la fuente */
+        color: #333333; /* Cambia el color de la fuente */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 MQTT_BROKER = "broker.mqttdashboard.com"
 MQTT_PORT = 1883
 MQTT_TOPIC = "sensor_st"
@@ -28,8 +44,7 @@ if 'sensor_data' not in st.session_state:
     st.session_state.sensor_data = None
 
 def text_to_speech(text, tld):
-                
-    tts = gTTS(response,"es", tld , slow=False)
+    tts = gTTS(response, "es", tld, slow=False)
     try:
         my_file_name = text[0:20]
     except:
@@ -37,17 +52,14 @@ def text_to_speech(text, tld):
     tts.save(f"temp/{my_file_name}.mp3")
     return my_file_name, text
 
-
-                
 def remove_files(n):
     mp3_files = glob.glob("temp/*mp3")
     if len(mp3_files) != 0:
-      now = time.time()
-      n_days = n * 86400
-      for f in mp3_files:
-         if os.stat(f).st_mtime < now - n_days:
-             os.remove(f)
-
+        now = time.time()
+        n_days = n * 86400
+        for f in mp3_files:
+            if os.stat(f).st_mtime < now - n_days:
+                os.remove(f)
 
 def send_mqtt_message(message):
     """Función para enviar un mensaje MQTT"""
@@ -100,57 +112,28 @@ except:
 
 with st.sidebar:
     st.subheader("ASISTENTE DE COCINA")
-    st.write(
-    """Esta app hace más fácil preparar tus recetas.
-       
-    """
-                )            
+    st.write("Esta app hace más fácil preparar tus recetas.")
 
 image = Image.open('Remy.png')
-col1, col2, col3 = st.columns([1,2,3])
+col1, col2, col3 = st.columns([1, 2, 3])
 with col2:
-    st.image (image, caption='Tu receta a un clic',width=300)
+    st.image(image, caption='Tu receta a un clic', width=300)
 st.markdown("<h1 style='text-align: center; color: #5F6E81;'>¿Qué quieres preparar el día de hoy?</h1>", unsafe_allow_html=True)
-#st.subheader('¿Qué quieres preparar el día de hoy?')
 
-#with open('oven.json') as source:
- #    animation=json.load(source)
-#st.lottie(animation,width =350)
-
-#ke = st.text_input('Ingresa tu Clave')
-#os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
-os.environ['OPENAI_API_KEY'] = st.secrets["settings"]["key"] #ke
-
-#st.write(st.secrets["settings"]["key"])
+os.environ['OPENAI_API_KEY'] = st.secrets["settings"]["key"]
 
 pdfFileObj = open('Recetas.pdf', 'rb')
- 
-# creating a pdf reader object
-pdfReader = PyPDF2.PdfReader(pdfFileObj)
-
-
-    # upload file
-#pdf = st.file_uploader("Carga el archivo PDF", type="pdf")
-
-   # extract the text
-#if pdf is not None:
-from langchain.text_splitter import CharacterTextSplitter
- #pdf_reader = PdfReader(pdf)
-pdf_reader  = PyPDF2.PdfReader(pdfFileObj)
+pdf_reader = PyPDF2.PdfReader(pdfFileObj)
 text = ""
 for page in pdf_reader.pages:
-         text += page.extract_text()
+    text += page.extract_text()
 
-   # split into chunks
-text_splitter = CharacterTextSplitter(separator="\n",chunk_size=500,chunk_overlap=20,length_function=len)
+text_splitter = CharacterTextSplitter(separator="\n", chunk_size=500, chunk_overlap=20, length_function=len)
 chunks = text_splitter.split_text(text)
 
-# create embeddings
 embeddings = OpenAIEmbeddings()
 knowledge_base = FAISS.from_texts(chunks, embeddings)
 
-
-# Columnas para sensor y pregunta
 col1, col2 = st.columns([1, 2])
 
 with col1:
@@ -163,7 +146,6 @@ with col1:
             if sensor_data:
                 st.success("Datos recibidos")
                 st.metric("Temperatura", f"{sensor_data.get('Temp', 'N/A')}°C")
-                
             else:
                 st.warning("No se recibieron datos del sensor")
 
@@ -172,13 +154,8 @@ with col2:
     user_question = st.text_area("Escribe tu pregunta aquí:")
     
     if user_question:
-        # Incorporar datos del sensor en la pregunta si están disponibles
         if st.session_state.sensor_data:
-            enhanced_question = f"""
-            
-            Pregunta del usuario:
-            {user_question} # ,escribir al final solo los valores de temperatura de la receta y el tiempo en la respuesta
-            """
+            enhanced_question = f"Pregunta del usuario:\n{user_question} # ,escribir al final solo los valores de temperatura de la receta y el tiempo en la respuesta"
         else:
             enhanced_question = user_question
         
@@ -194,32 +171,28 @@ with col2:
             st.write("Respuesta:", response)
 
             if st.button("Escuchar"):
-              result, output_text = text_to_speech(response, 'es-es')
-              audio_file = open(f"temp/{result}.mp3", "rb")
-              audio_bytes = audio_file.read()
-              st.markdown(f"## Escucha:")
-              st.audio(audio_bytes, format="audio/mp3", start_time=0)
+                result, output_text = text_to_speech(response, 'es-es')
+                audio_file = open(f"temp/{result}.mp3", "rb")
+                audio_bytes = audio_file.read()
+                st.markdown(f"## Escucha:")
+                st.audio(audio_bytes, format="audio/mp3", start_time=0)
 
-user_question="" 
-TEMPC = st.number_input("Temperatura",key="1")
-TIMEC = st.number_input("Tiempo",key="2")
+user_question = "" 
+TEMPC = st.number_input("Temperatura", key="1")
+TIMEC = st.number_input("Tiempo", key="2")
 if st.button("Preparar"):
-    # Crear mensaje JSON
-    mensaje=f"{TEMPC} grados,{TIMEC} min" 
+    mensaje = f"{TEMPC} grados,{TIMEC} min" 
     send_mqtt_message(mensaje)
     client = mqtt.Client()
     client.connect(MQTT_BROKER, MQTT_PORT, 60)
     client.loop_start()
     time.sleep(1)
-    client.publish("h_ctrl",mensaje)
+    client.publish("h_ctrl", mensaje)
     client.disconnect()
-    # Enviar mensaje
     with st.spinner('Enviando mensaje...'):
         if send_mqtt_message(mensaje):
             st.success("Mensaje enviado con éxito")
-            #st.code(mensaje, language='json')
         else:
             st.error("Error al enviar el mensaje")
 
 pdfFileObj.close()
-
