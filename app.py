@@ -163,7 +163,7 @@ with col2:
     
     if user_question:
         if st.session_state.sensor_data:
-            enhanced_question = f"Pregunta del usuario:\n{user_question} , por favor describe la receta y escribir al final solo los valores de temperatura de la receta y el tiempo en la respuesta"
+            enhanced_question = f"Pregunta del usuario:\n{user_question} , por favor describe la receta, escribe al final solo los valores de temperatura de la receta y el tiempo en la respuesta"
         else:
             enhanced_question = user_question
         
